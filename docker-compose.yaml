@@ -1,0 +1,16 @@
+version: '3.8'
+name: celery-app
+
+services:
+  redis:
+    image: redis:7.0.11-alpine
+
+  celery:
+    container_name: worker
+    build:
+      context: ./app
+    command: celery --app=main worker -l INFO
+    volumes:
+      - ./app:/usr/src/app/
+    depends_on:
+      - redis
